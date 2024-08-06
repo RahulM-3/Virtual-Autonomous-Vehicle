@@ -3,6 +3,8 @@ import pygame
 from math import ceil
 from car import car
 from random import randint, uniform
+from sensor import *
+import math
 
 # setup
 pygame.init()
@@ -20,7 +22,7 @@ scroll = 0
 tiles = ceil(600 / road.get_height()) + 1
 
 # main car sprite
-mc_car = car(r"images/mc-car.png", 0.15, 320, 200)
+mc_car = car(r"images/mc_car.png", 0.15, 320, 200)
 mc_car.resize(60, 110)
 
 # npc car sprite
@@ -55,8 +57,10 @@ while(running):
         i += 1
     
     # draw car
+    for circles in activate_lidar((20, 219, 73), 200):
+        screen.blit(circles, (350, 250))
     mc_car.draw(screen)
-    pygame.draw.line(screen, (0, 0, 0), (60, 80), (130, 100))
+    
     for i in range(4):
         npc_cars[i].draw(screen)
         npc_cars[i].y -= mc_car.speed-npc_cars[i].speed

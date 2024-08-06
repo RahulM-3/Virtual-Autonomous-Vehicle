@@ -35,7 +35,7 @@ class car(pygame.sprite.Sprite):
                 self.rotate(180)
                 self.rotated = True
             screen.blit(self.image, (self.x2, self.y))
-            self.rect.topleft = (self.x2, self.y)    
+            self.rect.topleft = (self.x2, self.y)
         
     def collision(self, object):
         return self.mask.overlap(object.mask, (object.rect.x - self.rect.x, object.rect.y - self.rect.y))
