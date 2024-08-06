@@ -1,8 +1,8 @@
 # imports
 import pygame
 from math import ceil
-from random import randint
 from car import car
+from random import randint
 
 # setup
 pygame.init()
@@ -20,18 +20,12 @@ scroll = 0
 tiles = ceil(600 / road.get_height()) + 1
 
 # main car sprite
-mc_car = car(r"images/mc-car.png", 0.1)
+mc_car = car(r"images/mc-car.png", 0.15, 320, 200)
 mc_car.resize(60, 110)
-pos = 200
-mc_car_group = pygame.sprite.Group()
-mc_car_group.add(mc_car)
 
 # npc car sprite
-npc1 = car(r"images/car1.png", 0.05)
+npc1 = car(r"images/car1.png", 0.05, 325, randint(600, 1000), 378, randint(0, 1))
 npc1.resize(50, 100)
-npcpos = pos+200
-npc_car_group = pygame.sprite.Group()
-npc_car_group.add(npc1)
 
 # update every frame
 while(running):
@@ -48,21 +42,24 @@ while(running):
         screen.blit(road, (100, road.get_height()*i - scroll))
         i += 1
     
+    print(npc1.y)
+    print(npc1.lane)
+
     # draw car
-    mc_car.draw(screen, 320, pos)
-    npc1.draw(screen, 325, npcpos)
-    npcpos -= mc_car.speed-npc1.speed
-    #if(mc_car.collision(npc1)):
-    #if(pygame.sprite.spritecollide(mc_car, npc_car_group, False, pygame.sprite.collide_mask)):
-    if(pygame.Rect.colliderect(mc_car.rect, npc1.rect)):
-        print("Collision")
+    mc_car.draw(screen)
+    npc1.draw(screen)
+    npc1.y -= mc_car.speed-npc1.speed
+
+    if(mc_car.collision(npc1) or npc1.y <= 0-100):
+        npc1.y = randint(600, 800)
+        npc1.lane = randint(0, 1)
 
     # update road
     scroll += mc_car.speed
     if abs(scroll) > road.get_height():
         scroll = 0
 
-    
+
     pygame.display.flip()
 
 pygame.quit()
