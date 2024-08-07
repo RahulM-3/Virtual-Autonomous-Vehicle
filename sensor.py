@@ -15,8 +15,9 @@ class lidar:
     def get_data(self, object):
         collision_lidar = []
         for i, lidars in enumerate(self.lidar_range):
-            if(lidars[0].overlap(object.mask, (object.x - lidars[1], object.y - lidars[2]))):
-                collision_lidar.append(i+1)
+            collision = lidars[0].overlap(object.mask, (object.x - lidars[1], object.y - lidars[2]))
+            if(collision):
+                collision_lidar.append({i+1:collision})
                 col_img = pygame.image.load(f"images/lidar/blue/{i}.png").convert_alpha()
                 self.screen.blit(col_img, (lidars[1], lidars[2]))
         if(len(collision_lidar)):
