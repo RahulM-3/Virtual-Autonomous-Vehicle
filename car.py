@@ -6,7 +6,7 @@ class car(pygame.sprite.Sprite):
         self.image = pygame.image.load(carfile).convert_alpha()
         self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect()
-        self.speed = speed
+        self.speed = speed*30
         self.x = x
         self.y = y
         self.x2 = x2
