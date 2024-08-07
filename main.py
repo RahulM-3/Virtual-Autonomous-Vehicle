@@ -4,6 +4,7 @@ from math import ceil
 from car import car
 from random import randint, uniform
 from sensor import *
+from util import *
 
 # setup
 pygame.init()
@@ -43,6 +44,9 @@ def update(npc_car) -> bool:
 # update every frame
 while(running):
 
+    # debug values
+    debugs = {}
+
     # setup update
     for event in pygame.event.get():
         if(event.type == pygame.QUIT):
@@ -59,21 +63,25 @@ while(running):
     car_lidar = lidar(screen, (350, 250))
     # draw car
     mc_car.draw(screen)
-    
+
     for i in range(4):
-        car_lidar.get_data(npc_cars[i])
+        l = car_lidar.get_data(npc_cars[i])
+        if(l):
+            debugs["Car in lane"] = str(npc_cars[i].lane)
+            debugs["Speed"] = str(npc_cars[i].speed)[:4]
+
         npc_cars[i].draw(screen)
         npc_cars[i].y -= mc_car.speed-npc_cars[i].speed
         speed = npc_cars[i].speed
         l = npc_cars[i].lane
-        if(update(npc_cars[i])):
-            print("updated:", i, "speed:", speed, "lane:", l)
+        update(npc_cars[i])
 
     # update road
     scroll += mc_car.speed
     if abs(scroll) > road.get_height():
         scroll = 0
 
+    debug(screen, debugs)
 
     pygame.display.flip()
 
